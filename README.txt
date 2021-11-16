@@ -17,3 +17,11 @@ To run a script, right click on file name in the file explorer and click 'Run'. 
 
 Output from script will appear in remix terminal.
 
+TEST:
+(["Lakers", "Bucks"])
+	"bytes32[] _teams": [
+		"0x4c616b6572730000000000000000000000000000000000000000000000000000",
+		"0x4275636b73000000000000000000000000000000000000000000000000000000"
+	]
+
+
