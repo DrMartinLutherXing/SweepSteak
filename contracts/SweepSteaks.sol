@@ -19,7 +19,7 @@ struct Contestant {
  * @title
  * @dev Implements voting process along with vote delegation
  */
-contract Sweepsteaks {
+contract SweepSteaks {
 
     // Gather: Contestants can submit brackets
     // Active: The Tournament is taking place
@@ -58,9 +58,10 @@ contract Sweepsteaks {
         _;
     }
 
-    bytes32[] Teams;
+//    bytes32[] Teams;
 
-    uint256 totalGames;
+    uint256 totalGames = 3;
+
     error GamesLength();
     error GamesValue();
 
@@ -93,11 +94,12 @@ contract Sweepsteaks {
 
     /**
      */
-    constructor(bytes32[] memory _teams) {
+//    constructor(bytes32[] memory _teams) {
+    constructor() {
 
         //ASSUME Team.length == 2 ^ y;
-        Teams = _teams;
-        totalGames = Teams.length - 1;
+//        Teams = _teams;
+  //      totalGames = Teams.length - 1;
 
         chairperson = msg.sender;
         phase = Phase.Gather;
