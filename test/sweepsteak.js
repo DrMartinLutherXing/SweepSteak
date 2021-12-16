@@ -21,7 +21,7 @@ contract("SweepSteaks", async accounts => {
 	});
 	it("should find winning brackets", async () => {
 		let sweste = await SweepSteaks.deployed();
-		var winnerCount = await sweste.findWinningBrackets({ from: accounts[0] });
+		let winnerCount = await sweste.findWinningBrackets({ from: accounts[0] });
 		if (winnerCount == 2)
 			console.log("great! it counted right.");
 		else
