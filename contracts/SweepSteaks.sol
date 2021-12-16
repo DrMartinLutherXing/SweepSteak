@@ -107,6 +107,16 @@ contract SweepSteaks {
 
     }
 
+    function setActive()
+        public
+        inPhase(Phase.Gather)
+        onlyChair
+    {
+
+        phase = Phase.Active;
+
+    }
+
     function newContestant() private {
 
         Contestant storage submitee = contestants[msg.sender];
