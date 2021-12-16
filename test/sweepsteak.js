@@ -18,6 +18,7 @@ contract("SweepSteaks", async accounts => {
 			sweste.submitBracket(brax[i], { from: accounts[i] });
 	});
 	it("should shift to active phase", async () => {
+		let sweste = await SweepSteaks.deployed();
 		let phase = await sweste.phase();
 		console.log("phase:", phase);
 		sweste.setActive({ from: accounts[0] });
