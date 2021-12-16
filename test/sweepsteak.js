@@ -13,9 +13,10 @@ contract("SweepSteaks", async accounts => {
 	it("should accept bracket submissions", async () => {
 		let sweste = await SweepSteaks.deployed();
 		let phase = await sweste.phase();
-		console.log("phase:", phase);
+		var pnum = phase.toNumber();
+		console.log("phase:", pnum);
 		assert.equal(
-			phase.toNumber(),
+			pnum,
 			0,
 			"phase should be Gather (0)"
 		);
