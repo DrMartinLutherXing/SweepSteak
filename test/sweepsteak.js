@@ -15,13 +15,13 @@ contract("SweepSteaks", async accounts => {
 		let phase = await sweste.phase();
 		console.log("phase:", phase);
 		for (var i = 1; i < 7; i++)
-			sweste.submitBracket(brax[i], { from: accounts[i] });
+			await sweste.submitBracket(brax[i], { from: accounts[i] });
 	});
 	it("should shift to active phase", async () => {
 		let sweste = await SweepSteaks.deployed();
 		let phase = await sweste.phase();
 		console.log("phase:", phase);
-		sweste.setActive({ from: accounts[0] });
+		await sweste.setActive({ from: accounts[0] });
 		let phase2 = await sweste.phase();
 		console.log("phase:", phase2);
 	});
