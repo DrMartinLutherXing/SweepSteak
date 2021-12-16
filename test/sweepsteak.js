@@ -20,7 +20,7 @@ contract("SweepSteaks", async accounts => {
 			0,
 			"phase should be Gather (0)"
 		);
-		for (var i = 0; i < brax.length; i++)
+		for (var i = 0; i < brax.length - 1; i++)
 			await sweste.submitBracket(brax[i], { from: accounts[i + 1] });
 		let numBrax = await sweste.numBrackets();
 		var num = numBrax.toNumber();
