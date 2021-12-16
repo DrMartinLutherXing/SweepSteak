@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "solc": "^0.8.10",
+    "truffle": "^5.4.21"
+  }
+}
