@@ -20,14 +20,14 @@ contract("SweepSteaks", async accounts => {
 			0,
 			"phase should be Gather (0)"
 		);
-		for (var i = 1; i < 6; i++)
-			await sweste.submitBracket(brax[i], { from: accounts[i] });
+		for (var i = 0; i < brax.length; i++)
+			await sweste.submitBracket(brax[i], { from: accounts[i + 1] });
 		let numBrax = await sweste.numBrackets();
 		var num = numBrax.toNumber();
 		console.log("brax:", num);
 		assert.equal(
 			num,
-			i,
+			brax.length,
 			"brax counted wrong!"
 		);
 	});
