@@ -4,22 +4,23 @@ pragma solidity >=0.7.0 <0.9.0;
 
 
 
-struct Contestant {
-
-    // that person already voted
-    bool submitted;
-    bool claimed;
-
-    // id of submitted bracket
-    uint256 bracket_id;
-
-}
-
 /**
  * @title
  * @dev Implements voting process along with vote delegation
  */
 contract SweepSteaks {
+
+    struct Contestant {
+
+        // that person already voted
+        bool submitted;
+        bool claimed;
+
+        // id of submitted bracket
+        uint256 bracket_id;
+
+    }
+
 
     // Gather: Contestants can submit brackets
     // Active: The Tournament is taking place
@@ -68,7 +69,9 @@ contract SweepSteaks {
     struct Bracket {
         uint8[] games;
     }
-    uint256 numBrackets;
+    Bracket bracket;
+
+    uint256 public numBrackets;
     Bracket[] brackets;
     Bracket ResultBracket;
 
@@ -158,35 +161,40 @@ contract SweepSteaks {
     function newBracket(uint8[] memory games)
         private
         validGamesLength(games)
-        validGamesValues(games)
+        //validGamesValues(games)
     {
 
+        Bracket storage _bracket = bracket;
+        _bracket.games = games;
+
         // set contestants bracket
-        brackets[numBrackets++] = Bracket({ games: games });
+        numBrackets++;
+        brackets.push(_bracket);
 
     }
 
     /**
      */
-    function findWinningBrackets() public
+    function findWinningBrackets() public view
         inPhase(Phase.Ended)
         returns (uint winningBracketCount)
     {
 
-        ResultBracket = brackets[numBrackets-1];
-        brackets.pop();
+        //ResultBracket = brackets[numBrackets-1];
+        //brackets.pop();
 
-        uint8[] memory Results = ResultBracket.games;
+        //uint8[] memory Results = ResultBracket.games;
+        uint8[] memory Results = brackets[numBrackets-1].games;
 
-        for (uint b = 0; b < brackets.length; b++) {
+        for (uint b = 0; b < brackets.length-1; b++) {
 
             // compare results and bracket values
-            Bracket memory bracket = brackets[b];
+            Bracket memory _bracket = brackets[b];
             bool isWinner = true;
 
             for (uint r = 0; r < Results.length; r++) {
 
-                if (bracket.games[r] != Results[r]) {
+                if (_bracket.games[r] != Results[r]) {
                     isWinner = false;
                     break;
                 }
@@ -195,11 +203,11 @@ contract SweepSteaks {
 
             //add bracket index to winners array;
             if (isWinner)
-                winningBrackets.push(b);
+                winningBracketCount++;
 
         }
 
-        winningBracketCount = winningBrackets.length;
+        //winningBracketCount = winningBrackets.length;
 
     }
 
