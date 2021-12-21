@@ -10,20 +10,38 @@ const brax = [
 ]
 
 contract("SweepSteaks", async accounts => {
-	it("should accept bracket submissions", async () => {
-		let sweste = await SweepSteaks.deployed();
-		let phase = await sweste.phase();
-		var pnum = phase.toNumber();
+
+	it("should be in phase 0", async () => {
+		const sweste = await SweepSteaks.deployed();
+		const phase = await sweste.phase();
+		const pnum = phase.toNumber();
 		console.log("phase:", pnum);
 		assert.equal(
 			pnum,
 			0,
 			"phase should be Gather (0)"
 		);
-		for (var i = 0; i < brax.length; i++)
-			await sweste.submitBracket(brax[i], { from: accounts[i + 1] });
-		let numBrax = await sweste.numBrackets();
-		var num = numBrax.toNumber();
+    });
+
+	it("should have 0 bracket submissions", async () => {
+		const sweste = await SweepSteaks.deployed();
+		const numBrax = await sweste.numBrackets();
+		const num = numBrax.toNumber();
+		console.log("brax:", num);
+		assert.equal(
+			num,
+            0,
+			"brax counted wrong!"
+		);
+    });
+
+	it("should accept bracket submissions", async () => {
+		const sweste = await SweepSteaks.deployed();
+        const meta = sweste;
+        for (let b = 0; b < brax.length; b++)
+		    await meta.submitBracket(brax[b], { from: accounts[b+1] });
+		const numBrax = await meta.numBrackets();
+		const num = numBrax.toNumber();
 		console.log("brax:", num);
 		assert.equal(
 			num,
@@ -31,19 +49,12 @@ contract("SweepSteaks", async accounts => {
 			"brax counted wrong!"
 		);
 	});
+
 	it("should shift to active phase", async () => {
-		let sweste = await SweepSteaks.deployed();
-		let phase = await sweste.phase();
-		var pnum = phase.toNumber();
-		console.log("phase:", pnum);
-		assert.equal(
-			pnum,
-			0,
-			"phase should be Gather (0)"
-		);
+		const sweste = await SweepSteaks.deployed();
 		await sweste.setActive({ from: accounts[0] });
-		let phase2 = await sweste.phase();
-		pnum = phase2.toNumber();
+		const phase = await sweste.phase();
+		const pnum = phase.toNumber();
 		console.log("phase:", pnum);
 		assert.equal(
 			pnum,
@@ -51,40 +62,36 @@ contract("SweepSteaks", async accounts => {
 			"phase should be Active (1)"
 		);
 	});
-	it("should accept results submission", async () => {
-		let sweste = await SweepSteaks.deployed();
-		let phase = await sweste.phase();
-		var pnum = phase.toNumber();
-		console.log("phase:", pnum);
-		assert.equal(
-			pnum,
-			1,
-			"phase should be Active (1)"
-		);
+
+	it("should accept the result submission", async () => {
+		const sweste = await SweepSteaks.deployed();
 		await sweste.submitResults([1, 3, 3], { from: accounts[0] });
-		let phase2 = await sweste.phase();
-		pnum = phase2.toNumber();
+		const phase = await sweste.phase();
+		const pnum = phase.toNumber();
 		console.log("phase:", pnum);
+
 		assert.equal(
 			pnum,
 			2,
 			"phase should be Ended (2)"
 		);
+
 	});
+
 	it("should find winning brackets", async () => {
-		let sweste = await SweepSteaks.deployed();
-		let phase = await sweste.phase();
-		var pnum = phase.toNumber();
-		console.log("phase:", pnum);
+		const sweste = await SweepSteaks.deployed();
+		const phase = await sweste.phase();
+		const pnum = phase.toNumber();
+		const winnerCount = await sweste.findWinningBrackets({ from: accounts[0] });
+
+		console.log("winnerCount:", winnerCount);
+
 		assert.equal(
-			pnum,
+			winnerCount.toNumber(),
 			2,
-			"phase should be Ended (2)"
+			"winner count should be 2"
 		);
-		let winnerCount = await sweste.findWinningBrackets({ from: accounts[0] });
-		if (winnerCount == 2)
-			console.log("great! it counted right.");
-		else
-			console.log("great! it didn't work.");
+
 	});
+
 });
