@@ -8,7 +8,7 @@ pragma solidity >=0.7.0 <0.9.0;
  * @title
  * @dev Implements voting process along with vote delegation
  */
-contract SweepSteaks {
+contract SweepSteaks is priced {
 
     struct Contestant {
 
@@ -28,6 +28,8 @@ contract SweepSteaks {
     //  Claim: Scoring has completed; Contests can claim interest
     enum Phase { Gather, Active, Ended, Claim }
     Phase public phase;
+
+    uint submissionPrice;
 
     error InvalidPhase();
     modifier inPhase(Phase _phase) {
@@ -98,11 +100,13 @@ contract SweepSteaks {
     /**
      */
 //    constructor(bytes32[] memory _teams) {
-    constructor() {
+    constructor(uint price) {
 
         //ASSUME Team.length == 2 ^ y;
 //        Teams = _teams;
   //      totalGames = Teams.length - 1;
+
+        submissionPrice = price;
 
         chairperson = msg.sender;
         phase = Phase.Gather;
@@ -132,9 +136,11 @@ contract SweepSteaks {
     // Contestants Call
     function submitBracket(uint8[] memory games)
         public
+        payable
         inPhase(Phase.Gather)
         notChair
         notSubmitted
+        costs(submissionPrice)
     {
 
         newContestant();
@@ -180,10 +186,6 @@ contract SweepSteaks {
         returns (uint winningBracketCount)
     {
 
-        //ResultBracket = brackets[numBrackets-1];
-        //brackets.pop();
-
-        //uint8[] memory Results = ResultBracket.games;
         uint8[] memory Results = brackets[numBrackets-1].games;
 
         for (uint b = 0; b < brackets.length-1; b++) {
@@ -206,8 +208,6 @@ contract SweepSteaks {
                 winningBracketCount++;
 
         }
-
-        //winningBracketCount = winningBrackets.length;
 
     }
 
