@@ -1,7 +1,8 @@
 CT.require("CT.all");
 CT.require("core.config");
 
-var teams = ["a", "b", "c", "d", "e", "f", "g", "h"];
+var teams = ["a", "b", "c", "d", "e", "f", "g", "h",
+			 "i", "j", "k", "l", "m", "n", "o", "p"];
 
 var brak = function(teams, outres) {
 	var tlen = teams.length, t2 = tlen / 2,
@@ -13,6 +14,7 @@ var brak = function(teams, outres) {
 		b1 = brak(teams.slice(0, t2), rcell);
 		b2 = brak(teams.slice(t2), rcell);
 		n = CT.dom.div([rcell, b1, b2], "cell");
+		outres || n.classList.add("outer");
 		b1.onclick = function(e) {
 			rcell.innerText = b1.innerText;
 			e.stopPropagation();
