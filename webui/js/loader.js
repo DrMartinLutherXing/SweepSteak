@@ -15,6 +15,7 @@ var brak = function(teams, outres) {
 		b2 = brak(teams.slice(t2), rcell);
 		n = CT.dom.div([rcell, b1, b2], "cell");
 		outres || n.classList.add("outer");
+		outres || b2.classList.add("rightbrak");
 		b1.onclick = function(e) {
 			rcell.innerText = b1.innerText;
 			e.stopPropagation();

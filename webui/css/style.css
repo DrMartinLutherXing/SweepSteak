@@ -3,16 +3,45 @@
 	border: 1px solid black;
 	margin: 5px;
 	padding: 5px;
-	width: 65%;
+	width: 64%;
+	text-align: center;
+	cursor: pointer;
 }
 
 .result {
 	position: absolute;
 	top: calc(50% - 15px);
 	right: 0px;
-	width: 30%;
+	width: 28%;
 }
 
 .outer {
-	width: 50%;
+	width: 100%;
+}
+
+.outer > .cell {
+	width: 49%;
+}
+
+.outer > .result {
+	z-index: 1;
+	top: 100px;
+	width: 200px;
+	background: white;
+	left: calc(50% - 100px);
+}
+
+.rightbrak {
+	position: absolute;
+	right: 0px;
+	top: 5px;
+}
+
+.rightbrak .cell:not(.result) {
+	margin-left: 35%;
+}
+
+.rightbrak .result {
+	left: 0px;
+	right: initial;
 }
