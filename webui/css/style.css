@@ -1,0 +1,13 @@
+.cell {
+	position: relative;
+	border: 1px solid black;
+	margin: 5px;
+	padding: 5px;
+	width: 40%;
+}
+
+.result {
+	position: absolute;
+	top: calc(50% - 15px);
+	right: 0px;
+}
