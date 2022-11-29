@@ -3,6 +3,7 @@
 pragma solidity >=0.7.0 <0.9.0;
 
 import './priced.sol';
+import './Investor.sol';
 
 /**
  * @title
@@ -77,6 +78,8 @@ contract SweepSteaks is priced {
     Bracket[] brackets;
     Bracket ResultBracket;
 
+    Investor investor;
+
     modifier validGamesLength(uint8[] memory games) {
         if (games.length != totalGames)
             revert GamesLength();
@@ -112,6 +115,11 @@ contract SweepSteaks is priced {
         chairperson = msg.sender;
         phase = Phase.Gather;
 
+
+        investor = new Investor();
+
+        if (msg.value > 0)
+            investor.transfer(msg.value);
 
     }
 
