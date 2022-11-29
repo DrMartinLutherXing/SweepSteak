@@ -4,7 +4,7 @@ pragma solidity >=0.7.0 <0.9.0;
 
 contract Investor {
 
-    address public payable owner;
+    address public owner;
 
     error NotOwner();
     modifier onlyOwner() {
@@ -20,7 +20,7 @@ contract Investor {
     function withdraw()
         onlyOwner
     {
-        owner.transfer(address(this).balance);
+        payable(owner).transfer(address(this).balance);
     }
 
 }
