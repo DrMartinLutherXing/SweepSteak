@@ -2,7 +2,7 @@
 
 pragma solidity >=0.7.0 <0.9.0;
 
-
+import './priced.sol';
 
 /**
  * @title
@@ -100,13 +100,14 @@ contract SweepSteaks is priced {
     /**
      */
 //    constructor(bytes32[] memory _teams) {
-    constructor(uint price) {
+//    constructor(uint price) {
+    constructor() {
 
         //ASSUME Team.length == 2 ^ y;
 //        Teams = _teams;
   //      totalGames = Teams.length - 1;
 
-        submissionPrice = price;
+        submissionPrice = 1;//price;
 
         chairperson = msg.sender;
         phase = Phase.Gather;

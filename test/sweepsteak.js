@@ -39,7 +39,7 @@ contract("SweepSteaks", async accounts => {
 		const sweste = await SweepSteaks.deployed();
         const meta = sweste;
         for (let b = 0; b < brax.length; b++)
-		    await meta.submitBracket(brax[b], { from: accounts[b+1] });
+		    await meta.submitBracket(brax[b], { from: accounts[b+1], value: 1 });
 		const numBrax = await meta.numBrackets();
 		const num = numBrax.toNumber();
 		console.log("brax:", num);
