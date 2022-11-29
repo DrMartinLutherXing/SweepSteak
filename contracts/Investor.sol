@@ -9,7 +9,7 @@ contract Investor {
     error NotOwner();
     modifier onlyOwner() {
         if (msg.sender != owner)
-            revert OnlyOwner();
+            revert NotOwner();
         _;
     }
 
