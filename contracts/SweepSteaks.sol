@@ -118,7 +118,7 @@ contract SweepSteaks is priced {
 
         investor = new Investor();
 
-        if (msg.value > 0)
+        if (msg.value > 0) // for testing only!
             investor.transfer(msg.value);
 
     }
