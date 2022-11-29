@@ -115,8 +115,6 @@ contract SweepSteaks is priced {
         chairperson = msg.sender;
         phase = Phase.Gather;
 
-        investor = new Investor();
-
     }
 
     function invest()
@@ -124,6 +122,7 @@ contract SweepSteaks is priced {
         onlyChair
     {
 
+        investor = new Investor();
         investor.transfer(address(this).balance);
 
     }
