@@ -117,6 +117,17 @@ contract SweepSteaks is priced {
 
     }
 
+
+    receive()
+        payable external
+    {
+
+//        if (msg.sender == investor)
+//              phase change logic...
+
+    }
+
+
     function invest()
         public
         onlyChair
