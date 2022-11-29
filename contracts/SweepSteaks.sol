@@ -115,13 +115,19 @@ contract SweepSteaks is priced {
         chairperson = msg.sender;
         phase = Phase.Gather;
 
-
         investor = new Investor();
 
-        if (msg.value > 0) // for testing only!
-            investor.transfer(msg.value);
+    }
+
+    function invest()
+        public
+        onlyChair
+    {
+
+        investor.transfer(address(this).balance);
 
     }
+
 
     function setActive()
         public
