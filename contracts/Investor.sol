@@ -13,7 +13,7 @@ contract Investor {
         _;
     }
 
-    constructor() {
+    constructor() payable {
         owner = msg.sender;
     }
 

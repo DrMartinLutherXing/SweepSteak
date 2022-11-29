@@ -122,8 +122,7 @@ contract SweepSteaks is priced {
         onlyChair
     {
 
-        investor = new Investor();
-        investor.transfer(address(this).balance);
+        investor = (new Investor).value(address(this).balance)();
 
     }
 
