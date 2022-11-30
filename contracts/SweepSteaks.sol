@@ -122,18 +122,28 @@ contract SweepSteaks is priced {
         payable external
     {
 
-//        if (msg.sender == investor)
-//              phase change logic...
+        if (msg.sender == investor) {
+            phase = Phase.Claim;
+        }
 
     }
 
 
     function invest()
+        private
+    {
+
+        investor = (new Investor){value: address(this).balance}();
+
+    }
+
+
+    function deliver() /* only for testing! */
         public
         onlyChair
     {
 
-        investor = (new Investor){value: address(this).balance}();
+        investor.deliver();
 
     }
 
@@ -146,9 +156,13 @@ contract SweepSteaks is priced {
 
         phase = Phase.Active;
 
+        invest();
+
     }
 
-    function newContestant() private {
+    function newContestant()
+        private
+    {
 
         Contestant storage submitee = contestants[msg.sender];
 
