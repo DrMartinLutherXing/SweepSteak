@@ -83,13 +83,30 @@ contract("SweepSteaks", async accounts => {
 		const phase = await sweste.phase();
 		const pnum = phase.toNumber();
 		const winnerCount = await sweste.findWinningBrackets({ from: accounts[0] });
+		const wnum = winnerCount.toNumber();
 
-		console.log("winnerCount:", winnerCount);
+		console.log("winnerCount:", wnum);
 
 		assert.equal(
-			winnerCount.toNumber(),
+			wnum,
 			2,
 			"winner count should be 2"
+		);
+
+	});
+
+	it("should deliver", async () => {
+		const sweste = await SweepSteaks.deployed();
+		await sweste.deliver();
+		const phase = await sweste.phase();
+		const pnum = phase.toNumber();
+
+		console.log("phase:", pnum);
+
+		assert.equal(
+			pnum,
+			3,
+			"phase should be Claim (3)"
 		);
 
 	});
