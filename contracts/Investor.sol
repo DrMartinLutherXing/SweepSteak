@@ -17,7 +17,7 @@ contract Investor {
         owner = msg.sender;
     }
 
-    function deliver() public
+    function deliver() public /* only for testing! */
         onlyOwner
     {
         payable(owner).transfer(address(this).balance);
