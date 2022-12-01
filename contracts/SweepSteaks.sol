@@ -30,8 +30,6 @@ contract SweepSteaks is priced {
     enum Phase { Gather, Active, Ended, Claim }
     Phase public phase;
 
-    uint submissionPrice;
-
     error InvalidPhase();
     modifier inPhase(Phase _phase) {
         if (phase != _phase)
@@ -78,7 +76,12 @@ contract SweepSteaks is priced {
 
 //    bytes32[] Teams;
 
-    uint256 totalGames = 3;
+    // PUBLIC CONTRACT VARIABLES
+    uint public submissionPrice;
+
+    uint256 public totalGames      = 3;
+    uint256 public numBrackets     = 0;
+    uint256 public totalWinners    = 0;
 
     error GamesLength();
     error GamesValue();
@@ -88,7 +91,6 @@ contract SweepSteaks is priced {
     }
     Bracket bracket;
 
-    uint256 public numBrackets;
     Bracket[] brackets;
     Bracket ResultBracket;
 
@@ -106,8 +108,6 @@ contract SweepSteaks is priced {
                 revert GamesValue();
         _;
     }
-
-    uint[] public winningBrackets;
 
     modifier condition(bool _condition) {
         require(_condition);
@@ -254,35 +254,47 @@ contract SweepSteaks is priced {
 
     }
 
-    /**
-     */
-    function findWinningBrackets() public view
-        inPhase(Phase.Ended)
-        returns (uint winningBracketCount)
+    function isWinningBracket(uint bracketIndex)
+        private
+        returns (bool isWinner)
     {
 
         uint8[] memory Results = brackets[numBrackets-1].games;
 
-        for (uint b = 0; b < brackets.length-1; b++) {
+        // compare results and bracket values
+        Bracket memory _bracket = brackets[bracketIndex];
+        isWinner = true;
 
-            // compare results and bracket values
-            Bracket memory _bracket = brackets[b];
-            bool isWinner = true;
+        for (uint r = 0; r < Results.length; r++) {
 
-            for (uint r = 0; r < Results.length; r++) {
-
-                if (_bracket.games[r] != Results[r]) {
-                    isWinner = false;
-                    break;
-                }
-
+            if (_bracket.games[r] != Results[r]) {
+                isWinner = false;
+                break;
             }
 
-            //add bracket index to winners array;
-            if (isWinner)
+        }
+
+    }
+
+
+    /**
+     */
+    function findWinningBrackets()
+        private
+        inPhase(Phase.Ended)
+    {
+
+        uint256 winningBracketCount = 0;
+
+        for (uint b = 0; b < brackets.length-1; b++) {
+
+            // increment total count
+            if (isWinningBracket(b))
                 winningBracketCount++;
 
         }
+
+        totalWinners = winningBracketCount;
 
     }
 
