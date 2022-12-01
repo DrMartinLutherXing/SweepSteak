@@ -125,7 +125,7 @@ contract SweepSteaks is priced {
 //        Teams = _teams;
   //      totalGames = Teams.length - 1;
 
-        submissionPrice = 1;//price;
+        submissionPrice = 1000000000000000000;
 
         chairperson = msg.sender;
         phase = Phase.Gather;
