@@ -137,7 +137,7 @@ contract SweepSteaks is priced {
         payable external
     {
 
-        if (msg.sender == investor) {
+        if (msg.sender == address(investor)) {
 
             phase = Phase.Claim;
 
@@ -246,6 +246,8 @@ contract SweepSteaks is priced {
 
         phase = Phase.Ended;
 
+        findWinningBrackets();
+
     }
 
 
@@ -267,7 +269,7 @@ contract SweepSteaks is priced {
     }
 
     function isWinningBracket(uint bracketIndex)
-        private
+        private view
         returns (bool isWinner)
     {
 
