@@ -155,11 +155,11 @@ contract SweepSteaks is priced {
         uint winnings = submissionPrice;
 
         // TODO: return ante + (for winners) interest
-//        if () {    is winner
+        if (isWinningBracket(claimee.bracket_id)) {
 
 //            winnings += ;    interest / winnerCount
 
-//        }
+        }
 
         payable(msg.sender).transfer(winnings);
 
