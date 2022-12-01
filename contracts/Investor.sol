@@ -18,7 +18,7 @@ contract Investor {
     }
 
     function deliver() public /* only for testing! */
-        onlyOwner
+//        onlyOwner
     {
         payable(owner).transfer(address(this).balance);
     }

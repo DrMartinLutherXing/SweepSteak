@@ -1,4 +1,5 @@
 const SweepSteaks = artifacts.require("SweepSteaks");
+const Investor = artifacts.require("Investor");
 
 const E = 1000000000000000000;
 const brax = [
@@ -44,10 +45,9 @@ contract("SweepSteaks", async accounts => {
 
 	it("should accept bracket submissions", async () => {
 		const sweste = await SweepSteaks.deployed();
-        const meta = sweste;
         for (let b = 0; b < brax.length; b++)
-		    await meta.submitBracket(brax[b], { from: accounts[b+1], value: E });
-		const numBrax = await meta.numBrackets();
+		    await sweste.submitBracket(brax[b], { from: accounts[b+1], value: E });
+		const numBrax = await sweste.numBrackets();
 		const num = numBrax.toNumber();
 		console.log("brax:", num);
 		assert.equal(
@@ -104,7 +104,11 @@ contract("SweepSteaks", async accounts => {
 
 	it("should deliver", async () => {
 		const sweste = await SweepSteaks.deployed();
-		await sweste.deliver();
+		const investorAddress = await sweste.investor();
+		const investor = await Investor.at(investorAddress);
+
+		await investor.deliver();
+
 		const phase = await sweste.phase();
 		const pnum = phase.toNumber();
 

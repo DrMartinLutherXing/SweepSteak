@@ -95,7 +95,7 @@ contract SweepSteaks is priced {
 
     Bracket[] brackets;
 
-    Investor investor;
+    Investor public investor; /* ONLY PUBLIC FOR TEST!!!! */
 
     modifier validGamesLength(uint8[] memory games) {
         if (games.length != totalGames)
