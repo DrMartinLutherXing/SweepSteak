@@ -78,6 +78,8 @@ contract SweepSteaks is priced {
 
     // PUBLIC CONTRACT VARIABLES
     uint public submissionPrice;
+    uint public totalWinnings;
+    uint public totalAnte;
 
     uint256 public totalGames      = 3;
     uint256 public numBrackets     = 0;
@@ -92,7 +94,6 @@ contract SweepSteaks is priced {
     Bracket bracket;
 
     Bracket[] brackets;
-    Bracket ResultBracket;
 
     Investor investor;
 
@@ -137,7 +138,11 @@ contract SweepSteaks is priced {
     {
 
         if (msg.sender == investor) {
+
             phase = Phase.Claim;
+
+            totalWinnings = address(this).balance - totalAnte;
+
         }
 
     }
@@ -154,10 +159,9 @@ contract SweepSteaks is priced {
 
         uint winnings = submissionPrice;
 
-        // TODO: return ante + (for winners) interest
         if (isWinningBracket(claimee.bracket_id)) {
 
-//            winnings += ;    interest / winnerCount
+            winnings += totalWinnings / totalWinners;
 
         }
 
@@ -217,6 +221,8 @@ contract SweepSteaks is priced {
         notSubmitted
         costs(submissionPrice)
     {
+
+        totalAnte += submissionPrice;
 
         newContestant();
 
