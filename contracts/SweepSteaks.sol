@@ -174,6 +174,12 @@ contract SweepSteaks is priced {
         private
     {
 
+        /*
+        TODO (after some tests):
+        - make sure balance = totalAnte
+        - else (and probs in other error cases) return everyone's money
+        */
+
         investor = (new Investor){value: address(this).balance}();
 
     }
