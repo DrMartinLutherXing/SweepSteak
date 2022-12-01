@@ -149,7 +149,19 @@ contract SweepSteaks is priced {
         hasSubmitted
     {
 
+        Contestant storage claimee = contestants[msg.sender];
+        claimee.claimed = true;
+
+        uint winnings = submissionPrice;
+
         // TODO: return ante + (for winners) interest
+//        if () {    is winner
+
+//            winnings += ;    interest / winnerCount
+
+//        }
+
+        payable(msg.sender).transfer(winnings);
 
     }
 
