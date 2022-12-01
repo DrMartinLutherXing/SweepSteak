@@ -85,6 +85,7 @@ contract("SweepSteaks", async accounts => {
 		const winnerCount = await sweste.findWinningBrackets({ from: accounts[0] });
 		const wnum = winnerCount.toNumber();
 
+		console.log("phase:", pnum);
 		console.log("winnerCount:", wnum);
 
 		assert.equal(
