@@ -61,6 +61,20 @@ contract SweepSteaks is priced {
             revert ContestantSubmitted();
         _;
     }
+    error ContestantHasNotSubmitted();
+    modifier hasSubmitted() {
+        // Will this be undefined (error?)
+        if (!contestants[msg.sender].submitted)
+            revert ContestantHasNotSubmitted();
+        _;
+    }
+    error ContestantClaimed();
+    modifier notClaimed() {
+        // Will this be undefined (error?)
+        if (contestants[msg.sender].claimed)
+            revert ContestantClaimed();
+        _;
+    }
 
 //    bytes32[] Teams;
 
@@ -125,6 +139,17 @@ contract SweepSteaks is priced {
         if (msg.sender == investor) {
             phase = Phase.Claim;
         }
+
+    }
+
+
+    function claim()
+        public
+        notClaimed
+        hasSubmitted
+    {
+
+        // TODO: return ante + (for winners) interest
 
     }
 
