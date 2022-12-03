@@ -4,7 +4,7 @@ pragma solidity >=0.7.0 <0.9.0;
 
 contract Investor {
 
-    address public owner;
+    address payable public owner;
 
     error NotOwner();
     modifier onlyOwner() {
@@ -14,13 +14,13 @@ contract Investor {
     }
 
     constructor() payable {
-        owner = msg.sender;
+        owner = payable(msg.sender);
     }
 
     function deliver() public /* only for testing! */
 //        onlyOwner
     {
-        payable(owner).transfer(address(this).balance);
+        owner.transfer(address(this).balance);
     }
 
 }
