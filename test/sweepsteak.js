@@ -190,4 +190,18 @@ contract("SweepSteaks", async accounts => {
 
 	});
 
+
+	it("should claim", async () => {
+		const sweste = await SweepSteaks.deployed();
+        for (let b = 0; b < brax.length; b++)
+		    await sweste.claim({ from: accounts[b+1] });
+
+/*		console.log("brax:", num);
+		assert.equal(
+			num,
+			brax.length,
+			"brax counted wrong!"
+		);*/
+	});
+
 });
