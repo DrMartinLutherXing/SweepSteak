@@ -20,7 +20,13 @@ contract Investor {
     function deliver() public /* only for testing! */
 //        onlyOwner
     {
-        owner.transfer(address(this).balance);
+//        owner.transfer(address(this).balance);
+//        owner.send(address(this).balance);
+//        owner.call.value(address(this).balance)();
+
+        (bool sent, bytes memory data) = owner.call{value: address(this).balance}("");
+        require(sent, "Failed to send Ether");
+
     }
 
 }
