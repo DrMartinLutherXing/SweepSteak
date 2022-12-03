@@ -2,6 +2,8 @@ const SweepSteaks = artifacts.require("SweepSteaks");
 const Investor = artifacts.require("Investor");
 
 const E = 1000000000000000000;
+const accrued = 10 * E;
+
 const brax = [
 	[0, 1, 0],
 	[0, 2, 2],
@@ -18,7 +20,7 @@ contract("SweepSteaks", async accounts => {
 		console.log("adding test winnings");
 		sweste.sendTransaction({
 			from: accounts[0],
-			value: E * 10
+			value: accrued
 		});
 
 		const phase = await sweste.phase();
@@ -56,6 +58,23 @@ contract("SweepSteaks", async accounts => {
 			"brax counted wrong!"
 		);
 	});
+
+	it("should have correct balances", async () => {
+		const sweste = await SweepSteaks.deployed();
+
+        const expectedBalance = (brax.length * E) + accrued;
+        const actualBalance = await web3.eth.getBalance(sweste.address);
+
+		console.log({ actualBalance, expectedBalance });
+
+		assert.equal(
+            expectedBalance,
+            actualBalance,
+			"contract balance should equal expected"
+		);
+
+	});
+
 
 	it("should shift to active phase", async () => {
 		const sweste = await SweepSteaks.deployed();
@@ -102,12 +121,61 @@ contract("SweepSteaks", async accounts => {
 
 	});
 
+	it("should create Investor", async () => {
+		const sweste = await SweepSteaks.deployed();
+		const investorAddress = await sweste.investor();
+
+		console.log("investor address:", investorAddress);
+
+		assert.ok(
+            investorAddress,
+			"investor address should exist"
+		);
+
+	});
+
+	it("should have correct investor balance", async () => {
+		const sweste = await SweepSteaks.deployed();
+		const investorAddress = await sweste.investor();
+
+        const expectedBalance = (brax.length * E) + accrued;
+        const actualBalance = await web3.eth.getBalance(investorAddress);
+
+		console.log({ actualBalance, expectedBalance });
+
+		assert.equal(
+            expectedBalance,
+            actualBalance,
+			"investor balance should equal expected"
+		);
+
+	});
+
+	it("should have sweepsteak owner", async () => {
+		const sweste = await SweepSteaks.deployed();
+        const swesteAddress = sweste.address;
+		const investorAddress = await sweste.investor();
+
+		const investor = await Investor.at(investorAddress);
+		const investorOwner = await investor.owner();
+
+		console.log({ investorOwner, swesteAddress });
+
+		assert.equal(
+            swesteAddress,
+            investorOwner,
+			"investor should have sweepsteak contract as owner"
+		);
+
+	});
+
+
 	it("should deliver", async () => {
 		const sweste = await SweepSteaks.deployed();
 		const investorAddress = await sweste.investor();
 		const investor = await Investor.at(investorAddress);
 
-		await investor.deliver();
+		await investor.deliver({ from: accounts[0] });
 
 		const phase = await sweste.phase();
 		const pnum = phase.toNumber();
