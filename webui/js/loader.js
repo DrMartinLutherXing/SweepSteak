@@ -29,8 +29,8 @@ let brakker = {
 			}
 			else {
 				for (s in stats)
-					stats[s] = await _.get(s);
-				stats.phase = _.phases[await _.get("phase")];
+					stats[s] = _.get(s);
+				stats.phase = _.phases[_.get("phase")];
 			}
 			cb(stats);
 		}
