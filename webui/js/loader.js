@@ -12,7 +12,8 @@ let brakker = {
 			totalAnte: null,
 			totalGames: null,
 			totalWinners: null,
-			numBrackets: null
+			numBrackets: null,
+			phase: null
 		},
 		phases: ["Gather", "Active", "Ended", "Claim"],
 		get: async function(name) {
@@ -23,16 +24,14 @@ let brakker = {
 		},
 		loadStats: function(cb) {
 			let _ = brakker._, stats = _.stats, s;
-			if (!_.contract) {
-				for (s in stats)
-					stats[s] = "(not connected)";
-				stats.phase = "(not connected)";
-			}
-			else {
+			if (_.contract) {
 				for (s in stats)
 					stats[s] = _.get(s);
-				stats.phase = _.phases[_.get("phase")];
+				stats.phase = _.phases[stats.phase];
 			}
+			else
+				for (s in stats)
+					stats[s] = "(not connected)";
 			cb(stats);
 		}
 	},
