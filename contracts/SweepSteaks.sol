@@ -105,7 +105,7 @@ contract SweepSteaks is priced {
 
     modifier validGamesValues(uint8[] memory games) {
         for (uint i = 0; i < games.length; i++)
-            if (games[i] >= totalGames)
+            if (games[i] > totalGames)
                 revert GamesValue();
         _;
     }
