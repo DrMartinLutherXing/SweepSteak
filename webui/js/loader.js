@@ -16,9 +16,10 @@ let brakker = {
 		},
 		phases: ["Gather", "Active", "Ended", "Claim"],
 		get: async function(name) {
-			let con = brakker._.contract;
-			if (!con) return "(not connected)";
-			return await con[name]();
+			let con = brakker._.contract, rval = "(not connected)";
+			if (con) 
+				rval = await con[name]();
+			return rval;
 		},
 		loadStats: async function(cb) {
 			let _ = brakker._, stats = _.stats, s;
