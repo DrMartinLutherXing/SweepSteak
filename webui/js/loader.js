@@ -21,7 +21,7 @@ let brakker = {
 				rval = await con[name]();
 			return rval;
 		},
-		loadStats: async function(cb) {
+		loadStats: function(cb) {
 			let _ = brakker._, stats = _.stats, s;
 			if (!_.contract) {
 				for (s in stats)
