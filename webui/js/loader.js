@@ -5,7 +5,36 @@ CT.scriptImport("https://cdn.ethers.io/lib/ethers-5.2.umd.min.js");
 let cfg = core.config.brakker;
 
 let brakker = {
-	_: {},
+	_: {
+		stats: {
+			submissionPrice: null,
+			totalWinnings: null,
+			totalAnte: null,
+			totalGames: null,
+			totalWinners: null,
+			numBrackets: null
+		},
+		phases: ["Gather", "Active", "Ended", "Claim"],
+		get: async function(name) {
+			let con = brakker._.contract;
+			if (!con) return "(not connected)";
+			return await con[name]();
+		},
+		loadStats: async function(cb) {
+			let _ = brakker._, stats = _.stats, s;
+			if (!_.contract) {
+				for (s in stats)
+					stats[s] = "(not connected)";
+				stats.phase = "(not connected)";
+			}
+			else {
+				for (s in stats)
+					stats[s] = await _.get(s);
+				stats.phase = _.phases[await _.get("phase")];
+			}
+			cb(stats);
+		}
+	},
 	brak: function(teams, outres) {
 		let tlen = teams.length, t2 = tlen / 2,
 			n, rcell, b1, b2, brak = brakker.brak;
@@ -39,8 +68,19 @@ let brakker = {
 		};
 		return n;
 	},
+	stats: function() {
+		let n = CT.dom.div();
+		brakker._.loadStats(function(stats) {
+			CT.dom.setContent(n,
+				Object.keys(stats).map(n => n + ": " + stats[n]));
+		});
+		return n;
+	},
 	build: function() {
-		CT.dom.setMain(brakker.brak(cfg.teams));
+		CT.dom.setMain([
+			brakker.brak(cfg.teams),
+			brakker.stats()
+		]);
 	},
 	load: function(abi) {
 		let _ = brakker._;
