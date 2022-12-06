@@ -1,8 +1,7 @@
 CT.require("CT.all");
-CT.require("core.config");
+CT.require("core");
 
-var teams = ["a", "b", "c", "d", "e", "f", "g", "h",
-			 "i", "j", "k", "l", "m", "n", "o", "p"];
+var teams = core.config.teams;
 
 var brak = function(teams, outres) {
 	var tlen = teams.length, t2 = tlen / 2,
