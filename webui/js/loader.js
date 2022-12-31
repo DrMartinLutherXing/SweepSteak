@@ -42,14 +42,24 @@ const brakker = {
 			const bracket = await con.getBracket();
 			bracket && brakker.show(bracket);
 		},
-		submit: async function() {
-			const _ = brakker._, res = brakker.result();
+		dosubmit: async function() {
+			const _ = brakker._, res = brakker.result(),
+				con = _.contract, phase = _.stats.phase;
 			console.log(res);
-			if (!_.contract)
-				return console.log("submit: not connected");
-			await _.contract.submitBracket(res, {
-				value: _.stats.submissionPrice
-			});
+			if (!con)
+				return alert("dosubmit: not connected");
+			if (phase == "Active") {
+				await con.submitBracket(res, {
+					value: _.stats.submissionPrice
+				});
+			} else if (phase == "Ended")
+				await con.submitResults(res);
+			else
+				alert("wrong phase: " + phase);
+		},
+		submit: function() {
+			CT.dom.modal(CT.dom.button("submit bracket?",
+				brakker._.dosubmit, "gigantic"));
 		}
 	},
 	brak: function(teams, outres) {
