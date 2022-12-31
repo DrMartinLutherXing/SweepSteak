@@ -34,6 +34,22 @@ const brakker = {
 				for (s in stats)
 					stats[s] = "(not connected)";
 			cb(stats);
+		},
+		checkSubmission: async function() {
+			const _ = brakker._, con = _.contract;
+			if (!con)
+				return console.log("checkSubmittion: not connected");
+			const bracket = await con.getBracket();
+			bracket && brakker.show(bracket);
+		},
+		submit: async function() {
+			const _ = brakker._, res = brakker.result();
+			console.log(res);
+			if (!_.contract)
+				return console.log("submit: not connected");
+			await _.contract.submitBracket(res, {
+				value: _.stats.submissionPrice
+			});
 		}
 	},
 	brak: function(teams, outres) {
@@ -60,7 +76,7 @@ const brakker = {
 				if (outres)
 					outres.innerText = rcell.innerText;
 				else {
-					console.log(brakker.brasult());
+					brakker._.submit();
 					alert(rcell.innerText + " wins!");
 				}
 				e.stopPropagation();
@@ -92,6 +108,7 @@ const brakker = {
 			brakker.brak(cfg.teams),
 			brakker.stats()
 		]);
+		brakker._.checkSubmission();
 	},
 	load: function(abi) {
 		const _ = brakker._;
