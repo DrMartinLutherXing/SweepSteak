@@ -2,9 +2,9 @@ CT.require("CT.all");
 CT.require("core");
 CT.scriptImport("https://cdn.ethers.io/lib/ethers-5.2.umd.min.js");
 
-let cfg = core.config.brakker;
+const cfg = core.config.brakker;
 
-let brakker = {
+const brakker = {
 	_: {
 		stats: {
 			submissionPrice: null,
@@ -17,13 +17,14 @@ let brakker = {
 		},
 		phases: ["Gather", "Active", "Ended", "Claim"],
 		get: async function(name) {
-			let con = brakker._.contract, rval = "(not connected)";
+			const con = brakker._.contract, rval = "(not connected)";
 			if (con) 
 				rval = await con[name]();
 			return rval;
 		},
 		loadStats: function(cb) {
-			let _ = brakker._, stats = _.stats, s;
+			const _ = brakker._, stats = _.stats;
+			let s;
 			if (_.contract) {
 				for (s in stats)
 					stats[s] = _.get(s);
@@ -36,8 +37,8 @@ let brakker = {
 		}
 	},
 	brak: function(teams, outres) {
-		let tlen = teams.length, t2 = tlen / 2,
-			n, rcell, b1, b2, brak = brakker.brak;
+		const tlen = teams.length, t2 = tlen / 2, brak = brakker.brak;
+		let n, rcell, b1, b2;
 		if (tlen == 1) // pre-final (side final)
 			n = CT.dom.div(teams[0], "cell");
 		else {
@@ -70,14 +71,16 @@ let brakker = {
 		};
 		return n;
 	},
-	brasult: function() {
-		return CT.dom.className("result").map(r=>r.innerHTML);
+	result: function() {
+		return CT.dom.className("result").map(r=>cfg.teams.indexOf(r.innerHTML));
 	},
-	braload: function(arr) {
-		CT.dom.className("result").forEach( (r, i) => CT.dom.setContent(r, arr[i]) );
+	show: function(arr) {
+		CT.dom.className("result").forEach(function(r, i) {
+			CT.dom.setContent(r, cfg.teams[arr[i]]);
+		});
 	},
 	stats: function() {
-		let n = CT.dom.div();
+		const n = CT.dom.div();
 		brakker._.loadStats(function(stats) {
 			CT.dom.setContent(n,
 				Object.keys(stats).map(n => n + ": " + stats[n]));
@@ -91,12 +94,12 @@ let brakker = {
 		]);
 	},
 	load: function(abi) {
-		let _ = brakker._;
+		const _ = brakker._;
 		_.contract = new ethers.Contract(cfg.contract, abi, _.provider);
 		brakker.build();
 	},
 	init: function() {
-		let _ = brakker._;
+		const _ = brakker._;
 		_.provider = new ethers.providers.Web3Provider(window.ethereum);
 		cfg.abi ? fetch(cfg.abi).then(resp => resp.json()).then(brakker.load) : brakker.build();
 	}
