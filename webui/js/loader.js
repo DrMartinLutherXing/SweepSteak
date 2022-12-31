@@ -58,8 +58,10 @@ let brakker = {
 			rcell.onclick = function(e) {
 				if (outres)
 					outres.innerText = rcell.innerText;
-				else
+				else {
+					console.log(brakker.brasult());
 					alert(rcell.innerText + " wins!");
+				}
 				e.stopPropagation();
 			};
 		}
@@ -67,6 +69,12 @@ let brakker = {
 			return (rcell || n).innerText;
 		};
 		return n;
+	},
+	brasult: function() {
+		return CT.dom.className("result").map(r=>r.innerHTML);
+	},
+	braload: function(arr) {
+		CT.dom.className("result").forEach( (r, i) => CT.dom.setContent(r, arr[i]) );
 	},
 	stats: function() {
 		let n = CT.dom.div();
