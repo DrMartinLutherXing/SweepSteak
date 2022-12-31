@@ -218,6 +218,19 @@ contract SweepSteaks is priced {
 
     }
 
+    function getBracket()
+        public
+        view
+        hasSubmitted
+        returns (uint8[] bracket)
+    {
+
+        Contestant memory submitter = contestants[msg.sender];
+
+        bracket = brackets[submitter.bracket_id].games;
+
+    }
+
     // Contestants Call
     function submitBracket(uint8[] memory games)
         public
