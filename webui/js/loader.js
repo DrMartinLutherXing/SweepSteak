@@ -54,12 +54,15 @@ const brakker = {
 				});
 			} else if (phase == "Ended")
 				await con.submitResults(res);
+			else if (phase == "Claim")
+				await con.claim();
 			else
 				alert("wrong phase: " + phase);
 		},
 		submit: function() {
-			CT.dom.modal(CT.dom.button("submit bracket?",
-				brakker._.dosubmit, "gigantic"));
+			const _ = brakker._;
+			CT.dom.modal(CT.dom.button((_.stats.phase == "Claim") ?
+				"claim winnings?" : "submit bracket?", _.dosubmit, "gigantic"));
 		}
 	},
 	brak: function(teams, outres) {
