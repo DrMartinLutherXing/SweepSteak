@@ -115,17 +115,10 @@ contract SweepSteaks is priced {
         _;
     }
 
-    /**
-     */
-//    constructor(bytes32[] memory _teams) {
-//    constructor(uint price) {
-    constructor() {
+    constructor(uint price, uint games) {
 
-        //ASSUME Team.length == 2 ^ y;
-//        Teams = _teams;
-  //      totalGames = Teams.length - 1;
-
-        submissionPrice = 1000000000000000000;
+        totalGames = games;
+        submissionPrice = price;
 
         chairperson = msg.sender;
         phase = Phase.Gather;
@@ -222,12 +215,12 @@ contract SweepSteaks is priced {
         public
         view
         hasSubmitted
-        returns (uint8[] bracket)
+        returns (uint8[] memory games)
     {
 
         Contestant memory submitter = contestants[msg.sender];
 
-        bracket = brackets[submitter.bracket_id].games;
+        games = brackets[submitter.bracket_id].games;
 
     }
 
