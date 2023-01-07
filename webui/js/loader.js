@@ -48,11 +48,11 @@ const brakker = {
 			console.log(res);
 			if (!con)
 				return alert("dosubmit: not connected");
-			if (phase == "Active") {
+			if (phase == "Gather") {
 				await con.submitBracket(res, {
 					value: _.stats.submissionPrice
 				});
-			} else if (phase == "Ended")
+			} else if (phase == "Active")
 				await con.submitResults(res);
 			else if (phase == "Claim")
 				await con.claim();
