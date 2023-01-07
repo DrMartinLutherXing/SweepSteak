@@ -126,12 +126,14 @@ const brakker = {
 	},
 	load: function(abi) {
 		const _ = brakker._;
-		_.contract = new ethers.Contract(cfg.contract, abi, _.provider);
+		_.contract = new ethers.Contract(cfg.contract, abi, _.signer);
 		brakker.build();
 	},
-	init: function() {
+	init: async function() {
 		const _ = brakker._;
 		_.provider = new ethers.providers.Web3Provider(window.ethereum);
+		await _.provider.send('eth_requestAccounts', []);
+		_.signer = _.provider.getSigner();
 		cfg.abi ? fetch(cfg.abi).then(resp => resp.json()).then(brakker.load) : brakker.build();
 	}
 };
