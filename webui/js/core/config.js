@@ -10,7 +10,7 @@ core.config = {
         "include": []
     }, 
     "header": {
-        "logo": "Your Logo", 
+        "logo": "SweepSteaks", 
         "right": []
     }, 
     "keys": {}, 
