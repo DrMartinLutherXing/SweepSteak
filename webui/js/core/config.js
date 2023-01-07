@@ -3,7 +3,7 @@ core.config = {
         "teams": ["a", "b", "c", "d", "e", "f", "g", "h",
             "i", "j", "k", "l", "m", "n", "o", "p"],
         "contract": "CONTRACT_ADDRESS",
-        "abi": null // path eg "abi.json"
+        "abi": "/js/SweepSteaks.abi"
     },
     "log": {
         "exclude": [], 
