@@ -17,17 +17,18 @@ const brakker = {
 		},
 		phases: ["Gather", "Active", "Ended", "Claim"],
 		get: async function(name) {
-			const con = brakker._.contract, rval = "(not connected)";
-			if (con) 
+			const con = brakker._.contract;
+			let rval = "(not connected)";
+			if (con)
 				rval = await con[name]();
 			return rval;
 		},
-		loadStats: function(cb) {
+		loadStats: async function(cb) {
 			const _ = brakker._, stats = _.stats;
 			let s;
 			if (_.contract) {
 				for (s in stats)
-					stats[s] = _.get(s);
+					stats[s] = await _.get(s);
 				stats.phase = _.phases[stats.phase];
 			}
 			else
@@ -35,12 +36,11 @@ const brakker = {
 					stats[s] = "(not connected)";
 			cb(stats);
 		},
-		checkSubmission: async function() {
+		checkSubmission: function() {
 			const _ = brakker._, con = _.contract;
 			if (!con)
 				return console.log("checkSubmittion: not connected");
-			const bracket = await con.getBracket();
-			bracket && brakker.show(bracket);
+			con.getBracket().then(brakker.show, e => console.log("no bracket for you", e));
 		},
 		dosubmit: async function() {
 			const _ = brakker._, res = brakker.result(),
@@ -61,7 +61,7 @@ const brakker = {
 		},
 		submit: function() {
 			const _ = brakker._;
-			CT.dom.modal(CT.dom.button((_.stats.phase == "Claim") ?
+			CT.modal.modal(CT.dom.button((_.stats.phase == "Claim") ?
 				"claim winnings?" : "submit bracket?", _.dosubmit, "gigantic"));
 		}
 	},
