@@ -136,6 +136,12 @@ contract SweepSteaks is priced {
 
             totalWinnings = address(this).balance - totalAnte;
 
+            uint chairCut = totalWinnings / 10;
+
+            totalWinnings -= chairCut;
+
+            payable(chairperson).transfer(chairCut);
+
         }
 
     }
