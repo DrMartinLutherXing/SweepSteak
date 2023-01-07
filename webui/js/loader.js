@@ -36,11 +36,12 @@ const brakker = {
 					stats[s] = "(not connected)";
 			cb(stats);
 		},
-		checkSubmission: function() {
+		checkSubmission: async function() {
 			const _ = brakker._, con = _.contract;
 			if (!con)
 				return console.log("checkSubmittion: not connected");
-			con.getBracket().then(brakker.show, e => console.log("no bracket for you", e));
+			const bracket = await con.getBracket();
+			bracket.length && brakker.show(bracket);
 		},
 		dosubmit: async function() {
 			const _ = brakker._, res = brakker.result(),
