@@ -220,13 +220,13 @@ contract SweepSteaks is priced {
     function getBracket()
         public
         view
-        hasSubmitted
         returns (uint8[] memory games)
     {
 
         Contestant memory submitter = contestants[msg.sender];
 
-        games = brackets[submitter.bracket_id].games;
+        if (submitter.submitted)
+            games = brackets[submitter.bracket_id].games;
 
     }
 
